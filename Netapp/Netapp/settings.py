@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myapp',  # Your app name
 ]
 
 MIDDLEWARE = [
@@ -54,10 +55,14 @@ ROOT_URLCONF = 'Netapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [
+            BASE_DIR / 'templates',  # Add this if you want a global template directory
+            BASE_DIR / 'myapp/templates',  # Add this if you want to reference templates for "myapp"
+        ],
+        'APP_DIRS': True,  # This allows Django to look in app-specific templates folders
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -65,6 +70,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'Netapp.wsgi.application'
 
@@ -80,6 +86,9 @@ DATABASES = {
         'PASSWORD': '',  # No password for root
         'HOST': 'localhost',  # Host is localhost
         'PORT': '3306',  # Default MySQL port
+        'OPTIONS': {
+            'unix_socket': '/run/mysqld/mysqld.sock', 
+        },      
     }
 }
 

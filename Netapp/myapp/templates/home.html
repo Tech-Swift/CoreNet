@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ company.company_name }}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <!-- Font Awesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+<div class="container">
+  <!-- Hero Section -->
+  <header class="text-center my-5">
+    <h1>{{ company.company_name }}</h1>
+    <p>{{ company.tagline }}</p>
+    <p>{{ company.mission_statement }}</p>
+  </header>
+
+  <!-- About Section -->
+  <section>
+    <h2>About Us</h2>
+    <p>{{ company.about_us_text }}</p>
+  </section>
+
+  <!-- Contact Section -->
+  <section>
+    <h3>Contact</h3>
+    <p>Email: {{ company.contact_email }}</p>
+    <p>Phone: {{ company.contact_phone }}</p>
+    <p>Location: {{ company.location }}</p>
+  </section>
+
+  <!-- Company Logo -->
+  <section>
+    {% if company.logo %}
+      <img src="{{ company.logo.url }}" alt="{{ company.company_name }} logo" class="img-fluid">
+    {% else %}
+      <p>No logo available</p>
+    {% endif %}
+  </section>
+
+  <!-- Social Media Section -->
+  {% if company.social_media_links %}
+  <section class="my-4">
+    <h3>Follow Us</h3>
+    <ul class="list-inline">
+      {% for platform, link in company.social_media_links.items %}
+        {% if platform|lower == "twitter" or platform|lower == "x" %}
+          <li class="list-inline-item">
+            <a href="{{ link }}" target="_blank" class="btn btn-outline-dark btn-sm">
+              <i class="fab fa-x-twitter"></i> X
+            </a>
+          </li>
+        {% elif platform|lower == "linkedin" %}
+          <li class="list-inline-item">
+            <a href="{{ link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+        {% elif platform|lower == "instagram" %}
+          <li class="list-inline-item">
+            <a href="{{ link }}" target="_blank" class="btn btn-outline-danger btn-sm">
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+          </li>
+        {% elif platform|lower == "facebook" %}
+          <li class="list-inline-item">
+            <a href="{{ link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <!-- Key Metrics Section -->
+  <div class="row my-5">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5>Total Customers</h5>
+          <p>{{ total_customers }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5>Total Payments</h5>
+          <p>${{ total_payments }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5>Active Subscriptions</h5>
+          <p>{{ active_subscriptions }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Section -->
+  <section>
+    <h3>What Our Customers Are Saying</h3>
+    <ul class="list-group">
+      {% for feedback in recent_feedback %}
+        <li class="list-group-item">
+          <strong>{{ feedback.customer.name }}</strong>: {{ feedback.comment }}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+</div>
+
+</body>
+</html>

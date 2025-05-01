@@ -30,6 +30,18 @@ def home(request):
         'active_subscriptions': active_subscriptions,
     }
 
-    return render(request, 'home.html', context)
+    return render(request, 'master.html', context)
 
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+
+
+@csrf_exempt
+def trigger(request):
+    return JsonResponse({'message': 'Trigger endpoint hit successfully'})
+
+@csrf_exempt
+def callback(request):
+    return JsonResponse({'message': 'Callback received'})
 

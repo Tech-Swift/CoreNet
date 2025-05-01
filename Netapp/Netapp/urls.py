@@ -20,5 +20,10 @@ from myapp import views  # Import your views here
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', views.home, name='home'),  # Add this line to include the home view
+    
+    path('trigger', views.trigger, name='trigger'),
+
+    path('callback', views.callback, name='callback'),
 ]

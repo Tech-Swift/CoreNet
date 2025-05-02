@@ -30,7 +30,7 @@ def home(request):
         'active_subscriptions': active_subscriptions,
     }
 
-    return render(request, 'master.html', context)
+    return render(request, 'home.html', context)
 
 def dashboard(request):
     return render(request, 'dashboard.html')

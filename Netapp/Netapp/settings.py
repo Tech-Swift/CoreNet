@@ -140,6 +140,10 @@ STATICFILES_DIRS = [
     BASE_DIR / 'myapp/assets',   # if you're using a custom folder for extra static
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+# URL to use when referring to media served from MEDIA_ROOT
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

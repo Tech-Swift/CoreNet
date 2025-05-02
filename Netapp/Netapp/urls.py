@@ -25,6 +25,8 @@ urlpatterns = [
 
     path('', views.dashboard, name='dashboard'),
 
+    path('home/', views.home, name='home'),
+
     path('trigger/', views.trigger, name='trigger'),
 
     path('callback/', views.callback, name='callback'),
@@ -32,3 +34,6 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+

@@ -1,62 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ company.company_name }}</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <!-- Font Awesome for social icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-</head>
-<body>
+{% extends 'master.html' %}
+{% load static %}
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">{{ company.company_name }}</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
-    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#about">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#contact">Contact</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-<div class="container">
+{% block content %}
+<div class="container my-5">
   <!-- Hero Section -->
-  <header class="text-center my-5">
+  <header class="text-center mb-5">
     <h1>{{ company.company_name }}</h1>
     <p>{{ company.tagline }}</p>
     <p>{{ company.mission_statement }}</p>
   </header>
 
   <!-- About Section -->
-  <section id="about">
+  <section id="about" class="mb-5">
     <h2>About Us</h2>
     <p>{{ company.about_us_text }}</p>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="my-5">
+  <section id="contact" class="mb-5">
     <h3>Contact</h3>
-    <p>Email: {{ company.contact_email }}</p>
-    <p>Phone: {{ company.contact_phone }}</p>
-    <p>Location: {{ company.location }}</p>
+    <p><strong>Email:</strong> {{ company.contact_email }}</p>
+    <p><strong>Phone:</strong> {{ company.contact_phone }}</p>
+    <p><strong>Location:</strong> {{ company.location }}</p>
   </section>
 
-  <!-- Company Logo -->
-  <section class="text-center my-5">
+  <!-- Logo -->
+  <section class="text-center mb-5">
     {% if company.logo %}
       <img src="{{ company.logo.url }}" alt="{{ company.company_name }} logo" class="img-fluid">
     {% else %}
@@ -64,44 +33,8 @@
     {% endif %}
   </section>
 
-  <!-- Social Media Section -->
-  {% if company.social_media_links %}
-  <section class="my-4 text-center">
-    <h3>Follow Us</h3>
-    <ul class="list-inline">
-      {% for platform, link in company.social_media_links.items %}
-        {% if platform|lower == "twitter" or platform|lower == "x" %}
-          <li class="list-inline-item">
-            <a href="{{ link }}" target="_blank" class="btn btn-outline-dark btn-sm">
-              <i class="fab fa-x-twitter"></i> X
-            </a>
-          </li>
-        {% elif platform|lower == "linkedin" %}
-          <li class="list-inline-item">
-            <a href="{{ link }}" target="_blank" class="btn btn-outline-primary btn-sm">
-              <i class="fab fa-linkedin"></i> LinkedIn
-            </a>
-          </li>
-        {% elif platform|lower == "instagram" %}
-          <li class="list-inline-item">
-            <a href="{{ link }}" target="_blank" class="btn btn-outline-danger btn-sm">
-              <i class="fab fa-instagram"></i> Instagram
-            </a>
-          </li>
-        {% elif platform|lower == "facebook" %}
-          <li class="list-inline-item">
-            <a href="{{ link }}" target="_blank" class="btn btn-outline-primary btn-sm">
-              <i class="fab fa-facebook"></i> Facebook
-            </a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %}
-
-  <!-- Key Metrics Section -->
-  <div class="row my-5">
+  <!-- Key Metrics -->
+  <div class="row mb-5">
     <div class="col-md-3">
       <div class="card text-center">
         <div class="card-body">
@@ -114,7 +47,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h5>Total Payments</h5>
-          <p>${{ total_payments }}</p>
+          <p>KES {{ total_payments }}</p>
         </div>
       </div>
     </div>
@@ -128,41 +61,34 @@
     </div>
   </div>
 
-  <form method="POST">
-    {% csrf_token %}
-    <label>Phone Number:</label>
-    <input type="text" name="phone" required>
-
-    <label>Amount (KES):</label>
-    <input type="number" name="amount" required>
-
-    <button type="submit">Pay Now</button>
-</form>
+  <!-- Payment Form -->
+  <section class="mb-5">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="text" class="form-control" name="phone" id="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount (KES):</label>
+        <input type="number" class="form-control" name="amount" id="amount" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Pay Now</button>
+    </form>
+  </section>
 
   <!-- Feedback Section -->
-  <section class="my-5">
+  <section>
     <h3>What Our Customers Are Saying</h3>
     <ul class="list-group">
       {% for feedback in recent_feedback %}
         <li class="list-group-item">
           <strong>{{ feedback.customer.name }}</strong>: {{ feedback.comment }}
         </li>
+      {% empty %}
+        <li class="list-group-item">No feedback yet.</li>
       {% endfor %}
     </ul>
   </section>
-
 </div>
-
-<!-- Footer -->
-<footer class="bg-light text-center text-lg-start mt-5">
-  <div class="text-center p-3">
-    © 2025 {{ company.company_name }}. All rights reserved.
-  </div>
-</footer>
-
-<!-- Bootstrap JS for navbar toggling -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+{% endblock %}
